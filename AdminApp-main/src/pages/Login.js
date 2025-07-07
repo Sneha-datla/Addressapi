@@ -29,6 +29,8 @@ const handleLogin = async () => {
 
     console.log("Login successful:", response.data);
     // Optionally store user data or token here
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+
     navigate("/Dashboard"); // Redirect on successful login
   } catch (err) {
     console.error("Login error:", err);
