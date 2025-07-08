@@ -114,7 +114,9 @@ const SelectDeliveryAddress = () => {
               )}
             </span>
           </div>
-          <div style={styles.addressText}>{item.address}</div>
+          <div style={styles.addressText}>      
+            {item.flat}, {item.street}, {item.city}, {item.state}
+</div>
         </div>
       ))}
     </div>
