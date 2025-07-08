@@ -1,45 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const SelectDeliveryAddress = () => {
+  const [addresses, setAddresses] = useState([]);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
 
-  const addresses = [
-    {
-      icon: '🏠',
-      name: 'Harsha',
-      address: 'Andhrapradesh',
-    },
-    {
-      icon: '📍',
-      name: 'Anand Sharma',
-      address: 'anantapur',
-    },
-    {
-      icon: '🏢',
-      name: 'Harsha',
-      address: 'vizag.',
-    },
-    {
-      icon: '🏠',
-      name: 'Harsha V',
-      address: '2/72 ANANTAPUR',
-    },
-    {
-      icon: '📍',
-      name: 'Narasimha',
-      address: '12-5-10',
-    },
-    {
-      icon: '🏠',
-      name: 'Harsha Vardhan',
-      address: 's near PVC pipes company...',
-    },
-    {
-      icon: '🏠',
-      name: 'reddy ',
-      address: 'Some colony, Some area, Some city...',
-    },
-  ];
+  // Fetch addresses for the logged-in user
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      const user = JSON.parse(localStorage.getItem('user')); // or just use 'userId' if you only store that
+      if (user && user.id) {
+        try {
+          const res = await fetch(`https://adminapp-1-nk19.onrender.com/users/loginaddress?userId=${user.id}`);
+          const data = await res.json();
+          setAddresses(data);
+        } catch (err) {
+          console.error('Failed to fetch addresses:', err);
+        }
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   const handleSelect = (index) => {
     setSelectedAddressIndex(index);
@@ -125,7 +106,7 @@ const SelectDeliveryAddress = () => {
           onClick={() => handleSelect(index)}
         >
           <div style={styles.addressRow}>
-            <span>{item.icon}</span>
+            <span>{item.icon || '📍'}</span>
             <span style={styles.name}>
               {item.name}
               {index === selectedAddressIndex && (
